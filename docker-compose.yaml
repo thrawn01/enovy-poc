@@ -1,0 +1,27 @@
+version: '3'
+services:
+  api-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    expose:
+      - "8081"
+  authz-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.authz
+    expose:
+      - "4000"
+    ports:
+      - "4000:4000"
+  envoy:
+    image: envoyproxy/envoy:v1.15.0
+    volumes:
+      - ./envoy.yaml:/etc/envoy/envoy.yaml
+    #command: envoy --log-level debug --config-path /etc/envoy/envoy.yaml
+    expose:
+      - "8001"
+      - "8010"
+    ports:
+      - "8001:8001"
+      - "8010:8010"
